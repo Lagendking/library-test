@@ -1,7 +1,6 @@
 local library = {}
 local ta = 0
-local ba = 0
-local ta = 0
+local bta = 0
 
 function library:Init(id, thx)
     local uis = game:GetService("UserInputService")
@@ -275,6 +274,7 @@ function library:Init(id, thx)
         local Tab = Instance.new("TextButton")
         local uic = Instance.new("UICorner")
         local Fol = Instance.new("Folder")
+        local ull = Instance.new("UIListLayout")
 
         Tab.Name = nme.. "Tab"
         Tab.Parent = ScrollingFrame
@@ -295,15 +295,22 @@ function library:Init(id, thx)
 
         Fol.Parent = ScrollingFrame_2
         Fol.Name = nme
+        
+        ull.Parent = Fol
+        ull.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        ull.SortOrder = Enum.SortOrder.LayoutOrder
+        ull.Padding = UDim.new(0, 10)
 
         Tab.MouseButton1Click:Connect(function()
             for _, v in pairs(ScrollingFrame_2:GetChildren()) do
                 for _, v2 in pairs(v:GetChildren()) do
-                    v2.Visible = false
+                    if not v2:IsA("UIListLayout") then
+                        v2.Visible = false
+                    end
                 end
             end
             for _, v in pairs(ScrollingFrame_2:FindFirstChild(nme):GetChildren()) do
-                if v.Visible == false then
+                if not v:IsA("UIListLayout") then
                     v.Visible = true
                 end
             end
@@ -334,6 +341,43 @@ function library:Init(id, thx)
     
         ButtonText.MouseButton1Click:Connect(function()
             pcall(callback)
+        end)
+    end
+
+    function library2:newToggle(nme, tb, callback)
+        local enabled = false
+        local callback = callback or function() end
+        local ButtonText = Instance.new("TextButton")
+        local ImageButton = Instance.new("ImageButton")
+        local uic = Instance.new("UICorner")
+    
+        ButtonText.Name = nme.. "Button"
+        ButtonText.Parent = ScrollingFrame_2:FindFirstChild(tb)
+        ButtonText.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+        ButtonText.BorderSizePixel = 0
+        ButtonText.Position = UDim2.new(0.0215384606, 0, 0.0276497696, 0)
+        ButtonText.Size = UDim2.new(0, 312, 0, 44)
+        ButtonText.Font = Enum.Font.SourceSansSemibold
+        ButtonText.Text = nme
+        ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ButtonText.TextSize = 25.000
+
+        ImageButton.Parent = ButtonText
+        ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ImageButton.BackgroundTransparency = 1.000
+        ImageButton.Position = UDim2.new(0.0192307718, 0, 0.11363636, 0)
+        ImageButton.Size = UDim2.new(0, 36, 0, 33)
+        ImageButton.Image = "http://www.roblox.com/asset/?id=257125767"
+    
+        uic.CornerRadius = UDim.new(0, 10)
+        uic.Parent = ButtonText
+        
+        ta = ta + 1
+        ScrollingFrame_2.CanvasSize = UDim2.new(0, 0, 0.142 * ta, 0)
+    
+        ButtonText.MouseButton1Click:Connect(function()
+            enabled = not enabled
+            pcall(callback, enabled)
         end)
     end
     return library2
