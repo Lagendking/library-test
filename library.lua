@@ -382,3 +382,4 @@ function library:Init(id, thx)
     end
     return library2
 end
+return library
