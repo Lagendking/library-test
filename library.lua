@@ -377,6 +377,11 @@ function library:Init(id, thx)
     
         ButtonText.MouseButton1Click:Connect(function()
             enabled = not enabled
+            if enabled then
+                ImageButton.Image = "http://www.roblox.com/asset/?id=257125764"
+            else
+                ImageButton.Image = "http://www.roblox.com/asset/?id=257125767"
+            end
             pcall(callback, enabled)
         end)
     end
