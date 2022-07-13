@@ -385,6 +385,97 @@ function library:Init(id, thx)
             pcall(callback, enabled)
         end)
     end
+
+    function library2:newDrop(nme, tb, ops, callback)
+        local oa = 0
+        local callback = callback or function() end
+        local DDFrame = Instance.new("Frame")
+        local UICorner = Instance.new("UICorner")
+        local ScrollingFrame_3 = Instance.new("ScrollingFrame")
+        local UIListLayout = Instance.new("UIListLayout")
+        local DropText = Instance.new("TextButton")
+        local UICorner_3 = Instance.new("UICorner")
+        local ImageButtond = Instance.new("ImageButton")
+        local choice = ""
+    
+        DDFrame.Name = "DDFrame"
+        DDFrame.Parent = OuterFrame
+        DDFrame.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+        DDFrame.Position = UDim2.new(1.01923072, 0, 0, 0)
+        DDFrame.Size = UDim2.new(0, 138, 0, 235)
+        DDFrame.Visible = false
+        
+        UICorner.CornerRadius = UDim.new(0, 10)
+        UICorner.Parent = DDFrame
+        
+        ScrollingFrame_3.Parent = DDFrame
+        ScrollingFrame_3.Active = true
+        ScrollingFrame_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ScrollingFrame_3.BackgroundTransparency = 1.000
+        ScrollingFrame_3.Size = UDim2.new(0, 138, 0, 235)
+        ScrollingFrame_3.CanvasSize = UDim2.new(0, 0, 0.25, 0)
+        ScrollingFrame_3.ScrollBarThickness = 3
+        
+        UIListLayout.Parent = ScrollingFrame_3
+        UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        UIListLayout.Padding = UDim.new(0, 10)
+        
+        DropText.Name = nme.. "Drop"
+        DropText.Parent = ScrollingFrame_2:FindFirstChild(tb)
+        DropText.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+        DropText.BorderSizePixel = 0
+        DropText.Position = UDim2.new(0, 6, 0, 5)
+        DropText.Size = UDim2.new(0, 312, 0, 44)
+        DropText.Font = Enum.Font.SourceSansSemibold
+        DropText.Text = nme
+        DropText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        DropText.TextSize = 25.000
+        
+        UICorner_3.CornerRadius = UDim.new(0, 10)
+        UICorner_3.Parent = DropText
+        
+        ImageButtond.Parent = DropText
+        ImageButtond.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ImageButtond.BackgroundTransparency = 1.000
+        ImageButtond.Position = UDim2.new(0.0192307718, 0, 0.11363636, 0)
+        ImageButtond.Size = UDim2.new(0, 36, 0, 33)
+        ImageButtond.Image = "http://www.roblox.com/asset/?id=4430338795"
+        
+        ta = ta + 1
+        ScrollingFrame_2.CanvasSize = UDim2.new(0, 0, 0.142 * ta, 0)
+        for _, v in pairs(ops) do
+            oa = oa + 1
+            ScrollingFrame_3.CanvasSize = UDim2.new(0, 0, 0.25 * oa, 0)
+            local TextButton = Instance.new("TextButton")
+            local UICorner_2 = Instance.new("UICorner")
+            TextButton.Parent = ScrollingFrame_3
+            TextButton.BackgroundColor3 = Color3.fromRGB(66, 66, 66)
+            TextButton.Position = UDim2.new(0.0760869533, 0, 0.404255331, 0)
+            TextButton.Size = UDim2.new(0, 118, 0, 45)
+            TextButton.Font = Enum.Font.SourceSans
+            TextButton.Text = v
+            TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            TextButton.TextSize = 20.000
+            TextButton.TextWrapped = true
+            
+            UICorner_2.CornerRadius = UDim.new(0, 10)
+            UICorner_2.Parent = TextButton
+
+            TextButton.MouseButton1Click:Connect(function()
+                choice = TextButton.Text
+                pcall(callback, choice)
+            end)
+        end
+        DropText.MouseButton1Click:Connect(function()
+            if DDFrame.Visible then
+                DDFrame.Visible = false
+            else
+                DDFrame.Visible = true
+            end
+        end)
+    end
     return library2
 end
 
