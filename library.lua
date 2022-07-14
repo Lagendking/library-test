@@ -6,6 +6,8 @@ function library:Init(id, thx)
     local uis = game:GetService("UserInputService")
     local rs = game:GetService("RunService")
     local ts = game:GetService("TweenService")
+    local mouse = game.Players.LocalPlayer:GetMouse()
+    local Value;
     local dragging
     local dragInput
     local dragStart
@@ -163,7 +165,7 @@ function library:Init(id, thx)
     ScrollingFrame_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ScrollingFrame_2.BackgroundTransparency = 1.000
     ScrollingFrame_2.Position = UDim2.new(0.213814914, 0, 0.0276497696, 0)
-    ScrollingFrame_2.Size = UDim2.new(0, 324, 0, 211)
+    ScrollingFrame_2.Size = UDim2.new(0, 324, 0, 205)
     ScrollingFrame_2.Visible = true
     ScrollingFrame_2.CanvasSize = UDim2.new(0, 0, 1, 0)
     ScrollingFrame_2.ScrollBarThickness = 0
@@ -281,10 +283,10 @@ function library:Init(id, thx)
         Tab.BackgroundColor3 = Color3.fromRGB(66, 66, 66)
         Tab.Position = UDim2.new(0.0900000036, 0, 0.0349756479, 0)
         Tab.Size = UDim2.new(0, 83, 0, 50)
-        Tab.Font = Enum.Font.SourceSans
+        Tab.Font = Enum.Font.SourceSansSemibold
         Tab.Text = nme
         Tab.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Tab.TextScaled = true
+        Tab.TextSize = 20
         Tab.TextWrapped = true
 
         uic.CornerRadius = UDim.new(0, 10)
@@ -336,8 +338,7 @@ function library:Init(id, thx)
         uic.CornerRadius = UDim.new(0, 10)
         uic.Parent = ButtonText
         
-        ta = ta + 1
-        ScrollingFrame_2.CanvasSize = UDim2.new(0, 0, 0.142 * ta, 0)
+        ScrollingFrame_2.AutomaticCanvasSize = Enum.AutomaticSize.Y
     
         ButtonText.MouseButton1Click:Connect(function()
             pcall(callback)
@@ -372,8 +373,7 @@ function library:Init(id, thx)
         uic.CornerRadius = UDim.new(0, 10)
         uic.Parent = ButtonText
         
-        ta = ta + 1
-        ScrollingFrame_2.CanvasSize = UDim2.new(0, 0, 0.142 * ta, 0)
+        ScrollingFrame_2.AutomaticCanvasSize = Enum.AutomaticSize.Y
     
         ButtonText.MouseButton1Click:Connect(function()
             enabled = not enabled
@@ -443,8 +443,6 @@ function library:Init(id, thx)
         ImageButtond.Size = UDim2.new(0, 36, 0, 33)
         ImageButtond.Image = "http://www.roblox.com/asset/?id=4430338795"
         
-        ta = ta + 1
-        ScrollingFrame_2.CanvasSize = UDim2.new(0, 0, 0.142 * ta, 0)
         for _, v in pairs(ops) do
             oa = oa + 1
             ScrollingFrame_3.CanvasSize = UDim2.new(0, 0, 0.25 * oa, 0)
@@ -471,9 +469,89 @@ function library:Init(id, thx)
         DropText.MouseButton1Click:Connect(function()
             if DDFrame.Visible then
                 DDFrame.Visible = false
+                ImageButtond.Rotation = 0
             else
                 DDFrame.Visible = true
+                ImageButtond.Rotation = 180
             end
+        end)
+    end
+    
+    function library2:newSlide(nme, tb, mi, ma, callback)
+        local sliding = false
+        local TextLabel = Instance.new("TextLabel")
+        local Bar = Instance.new("TextButton")
+        local UICorner = Instance.new("UICorner")
+        local Mark = Instance.new("Frame")
+        local Amount = Instance.new("TextLabel")
+        
+        TextLabel.Parent = ScrollingFrame_2:FindFirstChild(tb)
+        TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TextLabel.BackgroundTransparency = 1.000
+        TextLabel.Position = UDim2.new(0, 0, 0, 0)
+        TextLabel.Size = UDim2.new(0, 309, 0, 35)
+        TextLabel.Font = Enum.Font.SourceSansSemibold
+        TextLabel.Text = nme
+        TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TextLabel.TextSize = 25.000
+        TextLabel.TextWrapped = true
+        
+        Bar.Name = nme.. "Bar"
+        Bar.Parent = TextLabel.Parent
+        Bar.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+        Bar.Position = TextLabel.Position + UDim2.new(0, 0, 0, 45)
+        Bar.Size = UDim2.new(0, 311, 0, 16)
+        Bar.Text = ""
+        
+        UICorner.CornerRadius = UDim.new(0, 10)
+        UICorner.Parent = Bar
+        
+        Mark.Name = "Mark"
+        Mark.Parent = Bar
+        Mark.BackgroundColor3 = Color3.fromRGB(66, 66, 66)
+        Mark.Position = UDim2.new(0, 0, 0, 0)
+        Mark.Size = UDim2.new(0, 6, 0, 15)
+        Mark.BorderSizePixel = 1
+        
+        
+        Amount.Name = "Amount"
+        Amount.Parent = Bar
+        Amount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Amount.BackgroundTransparency = 1.000
+        Amount.Position = UDim2.new(0.893890679, 0, -0.7, 0)
+        Amount.Size = UDim2.new(0, 41, 0, 40)
+        Amount.Font = Enum.Font.SourceSansSemibold
+        Amount.Text = "0"
+        Amount.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Amount.TextSize = 14.000
+        
+        ScrollingFrame_2.CanvasSize = ScrollingFrame_2.CanvasSize - UDim2.new(0, 0, 1, 0)
+        
+        Bar.MouseButton1Down:Connect(function()
+            Value = math.floor((((tonumber(ma) - tonumber(mi)) / 311) * Mark.AbsoluteSize.X) + tonumber(mi)) or 0
+            pcall(function()
+                callback(Value)
+            end)
+            Mark.Size = UDim2.new(0, math.clamp(mouse.X - Mark.AbsolutePosition.X, 0, 311), 0, 16)
+            moveconnection = mouse.Move:Connect(function()
+                Amount.Text = Value
+                Value = math.floor((((tonumber(ma) - tonumber(mi)) / 311) * Mark.AbsoluteSize.X) + tonumber(mi))
+                pcall(function()
+                    callback(Value)
+                end)
+                Mark.Size = UDim2.new(0, math.clamp(mouse.X - Mark.AbsolutePosition.X, 0, 311), 0, 16)
+            end)
+            releaseconnection = uis.InputEnded:Connect(function(Mouse)
+                if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
+                    Value = math.floor((((tonumber(ma) - tonumber(mi)) / 311) * Mark.AbsoluteSize.X) + tonumber(mi))
+                    pcall(function()
+                        callback(Value)
+                    end)
+                    Mark.Size = UDim2.new(0, math.clamp(mouse.X - Mark.AbsolutePosition.X, 0, 311), 0, 16)
+                    moveconnection:Disconnect()
+                    releaseconnection:Disconnect()
+                end
+            end)
         end)
     end
     return library2
