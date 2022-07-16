@@ -463,6 +463,8 @@ function library:Init(id, thx)
 
             TextButton.MouseButton1Click:Connect(function()
                 choice = TextButton.Text
+                DDFrame.Visible = false
+                DropText.Text = tostring(choice)
                 pcall(callback, choice)
             end)
         end
