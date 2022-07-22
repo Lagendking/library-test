@@ -478,6 +478,53 @@ function library:Init(id, thx)
             end
         end)
     end
+
+    function library2:newBind(nme, tb, key, callback)
+        local BindText = Instance.new("TextLabel")
+        local UICorner = Instance.new("UICorner")
+        local aimText = Instance.new("TextBox")
+        local UICorner_2 = Instance.new("UICorner")
+
+        BindText.Name = nme.. "Bind"
+        BindText.Parent = ScrollingFrame_2:FindFirstChild(tb)
+        BindText.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+        BindText.BorderSizePixel = 0
+        BindText.Position = UDim2.new(0.0215384606, 0, 0.0276497696, 0)
+        BindText.Size = UDim2.new(0, 312, 0, 44)
+        BindText.Font = Enum.Font.SourceSansSemibold
+        BindText.Text = nme
+        BindText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        BindText.TextSize = 25.000
+
+        UICorner.CornerRadius = UDim.new(0, 10)
+        UICorner.Parent = BindText
+
+        aimText.Name = nme.. "Key"
+        aimText.Parent = BindText
+        aimText.BackgroundColor3 = Color3.fromRGB(66, 66, 66)
+        aimText.BorderSizePixel = 0
+        aimText.Position = UDim2.new(0.865384638, 0, 0.159090891, 0)
+        aimText.Size = UDim2.new(0, 30, 0, 30)
+        aimText.Font = Enum.Font.SourceSansBold
+        aimText.Text = tostring(string.char(key.Value):upper())
+        aimText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        aimText.TextSize = 25.000
+
+        UICorner_2.CornerRadius = UDim.new(0, 10)
+        UICorner_2.Parent = aimText
+        spawn(function()
+            while wait() do
+                aimText.Text = string.upper(aimText.Text)
+                akey = string.upper(aimText.Text)
+            end
+        end)
+
+        uis.InputBegan:Connect(function(input)
+            if input.KeyCode == Enum.KeyCode[akey] then
+                pcall(callback)
+            end
+        end)
+    end
     
     function library2:newSlide(nme, tb, mi, ma, callback)
         local sliding = false
